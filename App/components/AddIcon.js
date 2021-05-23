@@ -18,8 +18,6 @@ const styles = StyleSheet.create({
 });
 
 export default function AddIcon() {
-  // console.log('the nav');
-  // console.log(navigation);
   const {
     collectionList,
     openModal,

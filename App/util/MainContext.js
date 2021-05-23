@@ -1,7 +1,9 @@
 import React, {createContext, useState} from 'react';
+import {Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import dayjs from 'dayjs';
 import uuid from 'react-native-uuid';
+import {getLinkPreview} from 'link-preview-js';
+import {displayToast} from '../config/functions';
 
 export const MainContext = createContext();
 
@@ -10,15 +12,17 @@ export const MainContextProvider = ({children}) => {
   const [openModal, setOpenModal] = useState(false);
   const [modalType, setModalType] = useState('collection');
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isToastVisible, setToastVisibility] = useState(false);
   const [collectionFormData, setCollectionFormData] = useState({
     label: '',
   });
   const [articlesFormData, setArticlesFormData] = useState({
-    id: 'init_id',
-    collectionId: 'default_id',
-    label: '',
+    collectionListId: null,
+    title: '',
+    imageURL: '',
     url: '',
     isRead: false,
+    id: 'init_id',
   });
   const [collectionList, setCollectionList] = useState([{}]);
   const [articlesList, setArticleList] = useState([]);
@@ -26,7 +30,9 @@ export const MainContextProvider = ({children}) => {
   const [bottomSheetType, setBottomSheetType] = useState('collection');
   const [articleId, setArticleId] = useState('init_id');
   const [collectionId, setCollectionId] = useState('init_id');
-  const [editClicked, setEditClicked] = useState(false);
+  const [isEditCollection, setEditCollection] = useState(false);
+  const [itemUrl, setItemUrl] = useState('');
+  const [isEditArticle, setEditArticle] = useState(false);
 
   const addCollection = async () => {
     try {
@@ -39,11 +45,15 @@ export const MainContextProvider = ({children}) => {
         label,
       };
       const updatedFormData = [...existingDataParsed, collectionRecord];
-      const sortedData = [...collectionList.concat(collectionRecord)];
+      const modifiedData = [...collectionList.concat(collectionRecord)];
       await AsyncStorage.setItem('clippyData', JSON.stringify(updatedFormData));
-      setCollectionList(sortedData);
+      setCollectionList(modifiedData);
+      displayToast('Collection added successfully');
     } catch (err) {
-      alert('Could not create the collection. Please try again.');
+      Alert.alert(
+        'Could not create the collection.',
+        'Please try again later.',
+      );
     }
   };
 
@@ -71,29 +81,267 @@ export const MainContextProvider = ({children}) => {
         collectionId,
         label,
       };
-      setCollectionList(editedArray);
-      // setParsedData(convertToSectionDataFormat(editedArray));
 
+      setCollectionList(editedArray);
       await AsyncStorage.setItem('clippyData', JSON.stringify(editedArray));
+      displayToast('Collection edited successfully');
     } catch (err) {
-      alert('Could not edit collection. Please try again.');
+      Alert.alert('Could not edit the collection.', 'Please try again later.');
     }
   };
 
   const deleteCollection = async () => {
     try {
-      // const collectionData = await AsyncStorage.getItem('clippyData');
-      // const collectionDataParsed = JSON.parse(collectionData);
       const updatedCollectionData = collectionList.filter(
         collection => collection.id !== collectionId,
       );
+
+      if (articlesList) {
+        const updatedArticlesList = articlesList.filter(
+          article => article.collectionListId !== collectionId,
+        );
+        await AsyncStorage.setItem(
+          'articleData',
+          JSON.stringify(updatedArticlesList),
+        );
+        setArticleList(updatedArticlesList);
+      }
+
       await AsyncStorage.setItem(
         'clippyData',
         JSON.stringify(updatedCollectionData),
       );
       setCollectionList(updatedCollectionData);
+      displayToast('Collection deleted successfully');
     } catch (err) {
-      alert('Could not delete the collection. Please try again.');
+      Alert.alert(
+        'Could not delete the collection.',
+        'Please try again later.',
+      );
+    }
+  };
+
+  const deleteArticle = async () => {
+    try {
+      const updatedArticlesList = articlesList.filter(
+        article => article.id !== articleId,
+      );
+      await AsyncStorage.setItem(
+        'articleData',
+        JSON.stringify(updatedArticlesList),
+      );
+      setArticleList(updatedArticlesList);
+      displayToast('Article deleted successfully');
+    } catch (err) {
+      Alert.alert('Could not delete the article.', 'Please try again later.');
+    }
+  };
+
+  const addArticles = async () => {
+    try {
+      const data = await getArticleData();
+
+      // setArticlesFormData({
+      //   ...articlesFormData,
+      //   title: data.title,
+      //   imageUrl: data.favicons[1],
+      // });
+
+      const title = data.title;
+      const url = articlesFormData.url;
+      const imageUrl = data.favicons[1];
+      const collectionListId = articlesFormData.collectionListId;
+      const isRead = articlesFormData.isRead;
+      const id = uuid.v4();
+
+      const articleItem = {
+        id,
+        collectionListId,
+        title,
+        url,
+        imageUrl,
+        isRead,
+      };
+
+      const modifiedData = [...articlesList.concat(articleItem)];
+
+      updateAsyncStorage(articleItem);
+      setArticleList(modifiedData);
+
+      setEditArticle(false);
+      setArticlesFormData({
+        collectionListId: null,
+        title: '',
+        url: '',
+        imageUrl: '',
+        id: 'init_id',
+        isRead: false,
+      });
+
+      setOpenModal(false);
+      displayToast('Article added successfully');
+    } catch (err) {
+      Alert.alert('Could not add the articles', 'Please try again later.');
+    }
+  };
+
+  const getArticleData = async () => {
+    try {
+      const urlData = await getLinkPreview(articlesFormData.url);
+      return urlData;
+    } catch (err) {
+      Alert.alert('Could not get the article data', 'Please try again later.');
+    }
+  };
+
+  const updateAsyncStorage = async articleItem => {
+    try {
+      const existingData = await AsyncStorage.getItem('articleData');
+      const existingDataParsed = JSON.parse(existingData);
+      const updatedFormData =
+        existingDataParsed === null
+          ? [articleItem]
+          : [...existingDataParsed, articleItem];
+
+      await AsyncStorage.setItem(
+        'articleData',
+        JSON.stringify(updatedFormData),
+      );
+      setOpenModal(false);
+    } catch (err) {
+      Alert.alert('Could not add the article', 'Please try again later.');
+    }
+  };
+
+  const convertToSectionDataFormat = () => {
+    const articleList = articlesList.filter(
+      article => article.collectionListId === collectionId,
+    );
+    if (articleList.length === 0) {
+      return [];
+    } else {
+      let convertedData = [];
+      let data = [];
+
+      const readItems = articleList.filter(item => item.isRead === true);
+
+      const unReadItems = articleList.filter(item => item.isRead === false);
+
+      convertedData.push({
+        title: 'Unread',
+        data: unReadItems,
+      });
+
+      data.push({
+        title: 'Read',
+        data: readItems,
+      });
+
+      const modifiedList = [...convertedData.concat(data)];
+
+      return modifiedList;
+    }
+  };
+
+  const markAsRead = async () => {
+    try {
+      let editedArray = articlesList;
+
+      const indexOfRecordToEdit = articlesList.findIndex(
+        article => article.id === articleId,
+      );
+      const articleToEdit = articlesList.filter(
+        article => article.id === articleId,
+      )[0];
+
+      const id = articleId;
+      const collectionListId = articleToEdit.collectionListId;
+      const title = articleToEdit.title;
+      const url = articleToEdit.url;
+      const imageUrl = articleToEdit.imageUrl;
+      const isRead = true;
+
+      editedArray[indexOfRecordToEdit] = {
+        id,
+        collectionListId,
+        title,
+        url,
+        imageUrl,
+        isRead,
+      };
+
+      setArticleList(editedArray);
+      await AsyncStorage.setItem('articleData', JSON.stringify(editedArray));
+      displayToast('Article marked as read');
+    } catch (err) {
+      Alert.alert(
+        'Could not mark the article as read',
+        'Please try again later.',
+      );
+    }
+  };
+
+  const onEditPress = () => {
+    if (articlesList) {
+      const editedData = articlesList.filter(item => item.id === articleId)[0];
+      setArticlesFormData({
+        id: editedData.id,
+        collectionListId: editedData.collectionListId,
+        title: editedData.title,
+        url: editedData.url,
+        imageUrl: editedData.imageUrl,
+        isRead: editedData.isRead,
+      });
+    }
+  };
+
+  const editArticle = async () => {
+    try {
+      const data = await getArticleData();
+
+      let editedArray = articlesList;
+
+      const articleToEdit = articlesList.filter(
+        article => article.id === articleId,
+      )[0];
+
+      const id = articleId;
+      const collectionListId = articlesFormData.collectionListId;
+      const title = data.title;
+      const url = articlesFormData.url;
+      const imageUrl = data.favicons[1];
+      const isRead =
+        articleToEdit.url !== articlesFormData.url
+          ? false
+          : articleToEdit.isRead;
+
+      const indexOfRecordToEdit = articlesList.findIndex(
+        article => article.id === articleId,
+      );
+      editedArray[indexOfRecordToEdit] = {
+        id,
+        collectionListId,
+        title,
+        url,
+        imageUrl,
+        isRead,
+      };
+      setArticleList(editedArray);
+
+      await AsyncStorage.setItem('articleData', JSON.stringify(editedArray));
+      setEditArticle(false);
+      setArticlesFormData({
+        collectionListId: null,
+        title: '',
+        url: '',
+        imageUrl: '',
+        id: 'init_id',
+        isRead: false,
+      });
+      setOpenModal(false);
+      displayToast('Article edited successfully');
+    } catch (err) {
+      Alert.alert('Could not edit the article ', 'Please try again later.');
     }
   };
 
@@ -110,11 +358,20 @@ export const MainContextProvider = ({children}) => {
     bottomSheetType,
     articleId,
     collectionId,
-    editClicked,
+    isEditCollection,
+    isEditArticle,
+    itemUrl,
+    isToastVisible,
+    setToastVisibility,
+    setItemUrl,
+    markAsRead,
+    updateAsyncStorage,
+    addArticles,
+    setEditArticle,
     editCollection,
     deleteCollection,
     setEditData,
-    setEditClicked,
+    setEditCollection,
     setCollectionId,
     addCollection,
     setArticleId,
@@ -128,6 +385,10 @@ export const MainContextProvider = ({children}) => {
     setModalType,
     setOpenModal,
     setShowHeaderButtons,
+    convertToSectionDataFormat,
+    deleteArticle,
+    onEditPress,
+    editArticle,
   };
 
   return (

@@ -29,11 +29,17 @@ const styles = StyleSheet.create({
 });
 
 export default function AppModal() {
-  const {openModal, modalType, setOpenModal, dropdownOpen} =
+  const {openModal, modalType, isEditArticle, isEditCollection} =
     useContext(MainContext);
-  const height = modalType === 'collection' ? 142 : 234;
+  const height = modalType === 'collection' ? 148 : 240;
   const modalHeaderTitle =
-    modalType === 'collection' ? 'Create a collection' : 'Create a clip';
+    modalType === 'collection'
+      ? isEditCollection === false
+        ? 'Create a collection'
+        : 'Edit the collection'
+      : isEditArticle === false
+      ? 'Create a clip'
+      : 'Edit the clip';
   return (
     <Modal animationType={'slide'} transparent={true} visible={openModal}>
       <View style={styles.modal}>

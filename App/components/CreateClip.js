@@ -1,10 +1,97 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import colors from '../config/colors';
 import {MainContext} from '../util/MainContext';
 import Text from '../common/Text';
 import Input from '../common/Input';
 import Dropdown from '../common/Dropdown';
+
+export default function CreateClip() {
+  const {
+    articlesFormData,
+    setArticlesFormData,
+    dropdownOpen,
+    setOpenModal,
+    isEditArticle,
+    addArticles,
+    editArticle,
+    setEditArticle,
+  } = useContext(MainContext);
+
+  const onTextChange = text => {
+    setArticlesFormData({...articlesFormData, url: text});
+  };
+
+  const handleCreate = () => {
+    if (articlesFormData.collectionListId === null) {
+      alert('Please select a collection type');
+      return false;
+    }
+    let validatedRegEx =
+      /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/.test(
+        articlesFormData.url,
+      );
+
+    if (articlesFormData.url === '' || validatedRegEx === false) {
+      alert('Invalid URL entered');
+      return false;
+    }
+
+    if (isEditArticle === true) {
+      editArticle();
+    } else {
+      addArticles();
+    }
+  };
+
+  const clearForm = () => {
+    setArticlesFormData({
+      collectionListId: null,
+      label: '',
+      url: '',
+      isRead: false,
+    });
+  };
+
+  const buttonText = isEditArticle === true ? 'Save' : 'Create';
+
+  return (
+    <>
+      <View style={styles.container}>
+        <Text style={styles.textStyle}>Collection</Text>
+        <Dropdown />
+
+        <Text style={[styles.textStyle, styles.urlText]}>URL</Text>
+        {dropdownOpen === false && (
+          <Input
+            value={articlesFormData.url}
+            autoCapitalize={'none'}
+            styleAdd={styles.input}
+            onChange={value => onTextChange(value)}
+          />
+        )}
+      </View>
+      {dropdownOpen === false && (
+        <View style={styles.buttonWrapper}>
+          <TouchableOpacity
+            style={styles.buttonCancel}
+            onPress={() => {
+              setEditArticle(false);
+              clearForm();
+              setOpenModal(false);
+            }}>
+            <Text style={styles.buttonCancelText}>Cancel</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonCreate}
+            onPress={() => handleCreate()}>
+            <Text style={styles.buttonCreateText}>{buttonText}</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+    </>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -17,6 +104,7 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: colors.greyColor,
     marginTop: 6,
+    height: 44,
   },
   urlText: {
     marginTop: 22,
@@ -60,56 +148,3 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
 });
-
-export default function CreateClip() {
-  const {
-    collectionFormData,
-    setCollectionFormData,
-    articlesFormData,
-    setArticlesFormData,
-    dropdownOpen,
-    setOpenModal,
-  } = useContext(MainContext);
-
-  const validateText = text => {
-    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if (reg.test(text) === false) {
-      alert('Invalid email entered');
-      return false;
-    }
-  };
-
-  const onTextChange = text => {
-    // validateText(text);
-    setArticlesFormData({...articlesFormData, url: text});
-  };
-
-  return (
-    <>
-      <View style={styles.container}>
-        <Text style={styles.textStyle}>Collection</Text>
-        <Dropdown />
-        <Text style={[styles.textStyle, styles.urlText]}>URL</Text>
-        <Input
-          value={articlesFormData.url}
-          styleAdd={styles.input}
-          onChange={value => onTextChange(value)}
-        />
-      </View>
-      {dropdownOpen === false && (
-        <View style={styles.buttonWrapper}>
-          <TouchableOpacity
-            style={styles.buttonCancel}
-            onPress={() => {
-              setOpenModal(false);
-            }}>
-            <Text style={styles.buttonCancelText}>Cancel</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonCreate} onPress={() => {}}>
-            <Text style={styles.buttonCreateText}>Create</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-    </>
-  );
-}

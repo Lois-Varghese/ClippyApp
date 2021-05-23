@@ -5,7 +5,6 @@ import colors from '../config/colors';
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.white,
     width: '100%',
     height: '100%',
     marginTop: '50%',
@@ -14,10 +13,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export const NoData = ({textValue}) => {
+export const NoData = ({textValue, showBottomSheet, openModal}) => {
+  const bgColor =
+    showBottomSheet === true || openModal === true ? colors.grey : colors.white;
   return (
     <>
-      <View style={styles.container}>
+      <View style={[styles.container, {backgroundColor: bgColor}]}>
         <Text>{textValue}</Text>
       </View>
     </>

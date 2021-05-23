@@ -28,37 +28,41 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Dropdown({value1, onChange}) {
+export default function Dropdown() {
+  const {
+    setDropdownOpen,
+    collectionList,
+    articlesFormData,
+    setArticlesFormData,
+  } = useContext(MainContext);
+
+  const formattedList = collectionList.map((collection, index) => {
+    return {value: collection.id, label: collection.label, key: index};
+  });
+
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    {label: 'JavaScript', value: 'js'},
-    {label: 'TypeScript', value: 'ts'},
-    {label: 'fg', value: 'jfgs'},
-    {label: 'ffef', value: 'thth'},
-    {label: 'efeef', value: 'jfthththgs'},
-    {label: 'efeffef', value: 'jfgthths'},
-    {label: 'efeef', value: 'jfththtfgs'},
-    {label: 'efefef', value: 'sasaas'},
-    {label: 'ththt', value: 'effefc'},
-    {label: 'ththhh', value: 'rggrf'},
-    {label: 'fththg', value: 'yjuj'},
-    {label: 'last', value: 'jfvfvrvgs'},
-  ]);
-  const {setDropdownOpen} = useContext(MainContext);
+
+  const [items, setItems] = useState(formattedList);
 
   const openDropdown = e => {
     setOpen(e);
     setDropdownOpen(e);
   };
 
+  const setDropdownType = callback => {
+    setArticlesFormData({
+      ...articlesFormData,
+      collectionListId: callback(articlesFormData.collectionListId),
+    });
+  };
+
   return (
     <DropDownPicker
       open={open}
-      value={value}
+      value={articlesFormData.collectionListId}
       items={items}
       setOpen={e => openDropdown(e)}
-      setValue={setValue}
+      setValue={setDropdownType}
       setItems={setItems}
       style={styles.dropdown}
       textStyle={styles.textStyle}

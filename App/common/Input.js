@@ -12,12 +12,13 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Input({styleAdd, value, onChange}) {
+export default function Input({styleAdd, value, onChange, autoCapitalize}) {
   return (
     <TextInput
       style={[styles.input, styleAdd]}
       value={value}
       onChangeText={onChange}
+      autoCapitalize={autoCapitalize}
     />
   );
 }

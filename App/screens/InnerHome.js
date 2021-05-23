@@ -2,7 +2,6 @@ import React, {useContext, useEffect} from 'react';
 import {View, StyleSheet} from 'react-native';
 import colors from '../config/colors';
 import {MainContext} from '../util/MainContext';
-import {NoData} from '../common/NoData';
 import AppModal from '../common/Modal';
 import BottomSheet from '../common/BottomSheet';
 import {CollectionList} from '../components/CollectionList';
@@ -20,18 +19,8 @@ const styles = StyleSheet.create({
 });
 
 export const InnerHome = ({navigation}) => {
-  const dataText =
-    'No clips! Start by creating a collection using the + button';
-  const {openModal, showBottomSheet, collectionList} = useContext(MainContext);
+  const {openModal, showBottomSheet} = useContext(MainContext);
   const bgColor = openModal === true ? colors.lightBlack : colors.white;
-
-  const navigateToScreen = () => {
-    navigation.navigate('CollectionList');
-  };
-
-  // useEffect(() => {
-  //   navigateToScreen();
-  // }, [collectionList]);
 
   return (
     <View style={[styles.container, {backgroundColor: bgColor}]}>

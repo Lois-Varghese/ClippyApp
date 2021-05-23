@@ -1,11 +1,5 @@
 import React, {useContext} from 'react';
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  FlatList,
-} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import Text from '../common/Text';
 import colors from '../config/colors';
 import {MainContext} from '../util/MainContext';
@@ -47,6 +41,7 @@ export const CollectionList = ({navigation}) => {
     setShowHeaderButtons,
     collectionList,
     setCollectionId,
+    articlesList,
   } = useContext(MainContext);
 
   const bgColors =
@@ -65,21 +60,35 @@ export const CollectionList = ({navigation}) => {
     );
   };
 
-  const renderItem = ({item}) => (
-    <>
-      <TouchableOpacity
-        style={styles.listWrapper}
-        onPress={() => {
-          setCollectionId(item.id);
-          setShowHeaderButtons(true);
-          navigation.navigate('ArticleList');
-        }}>
-        <Text style={styles.collectionTitle}>{item.label}</Text>
-        <Text style={styles.articleTitle}>No clips!</Text>
-      </TouchableOpacity>
-      <Separator />
-    </>
-  );
+  const renderItem = ({item}) => {
+    const articles = articlesList.filter(
+      article => article.collectionListId === item.id,
+    );
+    const titles = articles.length > 3 ? articles.slice(0, 3) : articles;
+    const noArticles = articles.length === 0 ? true : false;
+
+    return (
+      <>
+        <TouchableOpacity
+          style={styles.listWrapper}
+          key={item.id}
+          onPress={() => {
+            setCollectionId(item.id);
+            setShowHeaderButtons(true);
+            navigation.navigate('ArticleList');
+          }}>
+          <Text style={styles.collectionTitle}>{item.label}</Text>
+          {titles.map(article => (
+            <Text style={styles.articleTitle} key={article.id}>
+              {article.title}
+            </Text>
+          ))}
+          {noArticles && <Text style={styles.articleTitle}>No clips!</Text>}
+        </TouchableOpacity>
+        <Separator />
+      </>
+    );
+  };
 
   return (
     <>

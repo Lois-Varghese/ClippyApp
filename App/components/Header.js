@@ -31,7 +31,7 @@ export default function Header({navigation}) {
     setShowHeaderButtons,
     setOpenModal,
     setModalType,
-    setEditClicked,
+    setEditCollection,
     setEditData,
     deleteCollection,
   } = useContext(MainContext);
@@ -68,7 +68,7 @@ export default function Header({navigation}) {
         <TouchableOpacity
           onPress={() => {
             setEditData();
-            setEditClicked(true);
+            setEditCollection(true);
             setModalType('collection');
             setOpenModal(true);
           }}>

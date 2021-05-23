@@ -11,25 +11,27 @@ export default function CreateCollection() {
     setCollectionFormData,
     setOpenModal,
     addCollection,
-    editClicked,
+    isEditCollection,
     editCollection,
+    setEditCollection,
   } = useContext(MainContext);
 
   const handleCreate = () => {
-    if (editClicked === true) {
+    if (isEditCollection === true) {
       editCollection();
     } else {
       addCollection();
     }
+    setEditCollection(false);
     clearForm();
     setOpenModal(false);
   };
 
   const clearForm = () => {
-    setCollectionFormData({...collectionFormData, label: ''});
+    setCollectionFormData({label: ''});
   };
 
-  const buttonText = editClicked === true ? 'Save' : 'create';
+  const buttonText = isEditCollection === true ? 'Save' : 'Create';
 
   return (
     <>
@@ -47,6 +49,7 @@ export default function CreateCollection() {
         <TouchableOpacity
           style={styles.buttonCancel}
           onPress={() => {
+            setEditCollection(false);
             setOpenModal(false);
             clearForm();
           }}>
@@ -73,6 +76,7 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: colors.greyColor,
     marginTop: 6,
+    height: 44,
   },
   buttonWrapper: {
     height: 55,

@@ -42,27 +42,58 @@ const styles = StyleSheet.create({
 });
 
 export const Home = () => {
-  const {openModal, collectionList, showHeaderButtons, setCollectionList} =
-    useContext(MainContext);
+  const {
+    openModal,
+    collectionList,
+    showHeaderButtons,
+    setCollectionList,
+    setArticleList,
+  } = useContext(MainContext);
+
   const bgColor =
+    collectionList.length > 0 &&
+    showHeaderButtons === true &&
     openModal === true
-      ? collectionList.length > 0
-        ? showHeaderButtons === true
-          ? colors.lightGrey
-          : colors.footerBlack
-        : colors.lightGrey
+      ? colors.lightGrey
+      : openModal === true
+      ? colors.footerBlack
       : colors.white;
+
+  // const bgColor =
+  //   openModal === true
+  //     ? colors.footerBlack
+  //     : collectionList.length > 0 &&
+  //       (showHeaderButtons === true || openModal === true)
+  //     ? colors.grey
+  //     : colors.white;
+
+  //   const bgColor =
+  // openModal === true
+  //   ? collectionList.length > 0
+  //     ? showHeaderButtons === true
+  //       ? colors.lightGrey
+  //       : colors.footerBlack
+  //     : colors.lightGrey
+  //   : colors.white;
 
   useEffect(() => {
     const fetchAppData = async () => {
       try {
         const clippyData = await AsyncStorage.getItem('clippyData');
+        const articleData = await AsyncStorage.getItem('articleData');
         if (clippyData !== null) {
           const clippyDataParsed = JSON.parse(clippyData);
           setCollectionList(clippyDataParsed);
         } else {
           await AsyncStorage.setItem('clippyData', JSON.stringify([]));
           setCollectionList([]);
+        }
+        if (articleData !== null) {
+          const articleDataParsed = JSON.parse(articleData);
+          setArticleList(articleDataParsed);
+        } else {
+          await AsyncStorage.setItem('articleData', JSON.stringify([]));
+          setArticleList([]);
         }
       } catch (e) {
         // eslint-disable-next-line no-alert

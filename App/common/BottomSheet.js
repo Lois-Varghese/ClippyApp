@@ -4,6 +4,7 @@ import Modal from 'react-native-modal';
 import colors from '../config/colors';
 import {MainContext} from '../util/MainContext';
 import Text from '../common/Text';
+import {openLink} from '../config/functions';
 
 const styles = StyleSheet.create({
   modal: {
@@ -28,6 +29,11 @@ export default function BottomSheet() {
     setShowBottomSheet,
     setOpenModal,
     setModalType,
+    itemUrl,
+    deleteArticle,
+    markAsRead,
+    onEditPress,
+    setEditArticle,
   } = useContext(MainContext);
 
   const handleCreateClip = () => {
@@ -43,24 +49,26 @@ export default function BottomSheet() {
   };
 
   const handleOpenBrowser = () => {
+    openLink(itemUrl);
     setShowBottomSheet(false);
   };
 
   const handleMarkAsRead = () => {
+    markAsRead();
     setShowBottomSheet(false);
-    //add logic for setting the isRead to true in articles in context
   };
 
   const handleEdit = () => {
+    setEditArticle(true);
     setShowBottomSheet(false);
+    onEditPress();
     setOpenModal(true);
     setModalType('clip');
-    //add logic to set the id of the article on longpress of article -> setArticleId
   };
 
   const handleDelete = () => {
+    deleteArticle();
     setShowBottomSheet(false);
-    //add logic to delete based on id
   };
 
   const height = bottomSheetType === 'collection' ? 140 : 258;
@@ -72,7 +80,6 @@ export default function BottomSheet() {
       transparent={true}
       visible={showBottomSheet}
       backdropOpacity={0.5}
-      // coverScreen={true}
       onBackdropPress={() => setShowBottomSheet(false)}>
       {bottomSheetType === 'collection' ? (
         <>
