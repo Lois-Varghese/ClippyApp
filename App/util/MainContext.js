@@ -141,12 +141,6 @@ export const MainContextProvider = ({children}) => {
     try {
       const data = await getArticleData();
 
-      // setArticlesFormData({
-      //   ...articlesFormData,
-      //   title: data.title,
-      //   imageUrl: data.favicons[1],
-      // });
-
       const title = data.title;
       const url = articlesFormData.url;
       const imageUrl = data.favicons[1];

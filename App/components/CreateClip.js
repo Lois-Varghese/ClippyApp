@@ -1,5 +1,5 @@
-import React, {useContext, useEffect} from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
+import React, {useContext} from 'react';
+import {StyleSheet, View, TouchableOpacity, Alert} from 'react-native';
 import colors from '../config/colors';
 import {MainContext} from '../util/MainContext';
 import Text from '../common/Text';
@@ -24,16 +24,20 @@ export default function CreateClip() {
 
   const handleCreate = () => {
     if (articlesFormData.collectionListId === null) {
-      alert('Please select a collection type');
+      Alert.alert(
+        'No collection type selected.',
+        'Please select a collection type.',
+      );
       return false;
     }
     let validatedRegEx =
+      // eslint-disable-next-line no-useless-escape
       /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/.test(
         articlesFormData.url,
       );
 
     if (articlesFormData.url === '' || validatedRegEx === false) {
-      alert('Invalid URL entered');
+      Alert.alert('Invalid URL.', 'Please enter a valid URL.');
       return false;
     }
 

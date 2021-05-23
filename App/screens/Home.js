@@ -1,6 +1,6 @@
 import React, {useEffect, useContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {SafeAreaView, StyleSheet, StatusBar, View} from 'react-native';
+import {SafeAreaView, StyleSheet, StatusBar} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {MainContext} from '../util/MainContext';
@@ -59,23 +59,6 @@ export const Home = () => {
       ? colors.footerBlack
       : colors.white;
 
-  // const bgColor =
-  //   openModal === true
-  //     ? colors.footerBlack
-  //     : collectionList.length > 0 &&
-  //       (showHeaderButtons === true || openModal === true)
-  //     ? colors.grey
-  //     : colors.white;
-
-  //   const bgColor =
-  // openModal === true
-  //   ? collectionList.length > 0
-  //     ? showHeaderButtons === true
-  //       ? colors.lightGrey
-  //       : colors.footerBlack
-  //     : colors.lightGrey
-  //   : colors.white;
-
   useEffect(() => {
     const fetchAppData = async () => {
       try {
@@ -101,7 +84,7 @@ export const Home = () => {
       }
     };
     fetchAppData();
-  }, []);
+  }, [setArticleList, setCollectionList]);
   return (
     <>
       <SafeAreaView style={styles.headerContainer} />

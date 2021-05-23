@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {View, StyleSheet, Modal, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Modal} from 'react-native';
 import colors from '../config/colors';
 import {MainContext} from '../util/MainContext';
 import Text from '../common/Text';
