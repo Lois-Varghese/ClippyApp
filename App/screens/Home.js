@@ -4,7 +4,6 @@ import {SafeAreaView, StyleSheet, StatusBar, View, Alert} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {MainContext} from '../util/MainContext';
-import {InnerHome} from './InnerHome';
 import Header from '../components/Header';
 import colors from '../config/colors';
 import {CollectionList} from '../components/CollectionList';
@@ -17,7 +16,6 @@ import BottomSheet from '../common/BottomSheet';
 const Stack = createStackNavigator();
 
 const screenNames = {
-  home: 'Home',
   collectionList: 'CollectionList',
   articleList: 'ArticleList',
   addIcon: 'AddIcon',
@@ -78,16 +76,15 @@ export const Home = () => {
         <StatusBar barStyle="light-content" backgroundColor={colors.red} />
         <NavigationContainer>
           <Stack.Navigator
-            initialRouteName={screenNames.home}
+            initialRouteName={screenNames.collectionList}
             screenOptions={{
               header: props => <Header {...props} />,
             }}>
-            <Stack.Screen name={screenNames.home} component={InnerHome} />
-            <Stack.Screen name={screenNames.noData} component={NoData} />
             <Stack.Screen
               name={screenNames.collectionList}
               component={CollectionList}
             />
+            <Stack.Screen name={screenNames.noData} component={NoData} />
             <Stack.Screen
               name={screenNames.articleList}
               component={ArticleList}
