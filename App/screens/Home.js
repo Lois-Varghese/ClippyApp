@@ -1,6 +1,6 @@
 import React, {useEffect, useContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {SafeAreaView, StyleSheet, StatusBar} from 'react-native';
+import {SafeAreaView, StyleSheet, StatusBar, View, Alert} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {MainContext} from '../util/MainContext';
@@ -25,21 +25,6 @@ const screenNames = {
   appModal: 'AppModal',
   bottomSheet: 'BottomSheet',
 };
-
-const styles = StyleSheet.create({
-  headerContainer: {
-    flex: 0,
-    backgroundColor: colors.red,
-  },
-  footerContainer: {
-    flex: 1,
-  },
-  footerWrapper: {
-    position: 'absolute',
-    right: 27,
-    bottom: 26,
-  },
-});
 
 export const Home = () => {
   const {
@@ -79,12 +64,12 @@ export const Home = () => {
           setArticleList([]);
         }
       } catch (e) {
-        // eslint-disable-next-line no-alert
-        alert('Something went wrong. Please try again.');
+        Alert.alert('Something went wrong.', 'Please try again later.');
       }
     };
     fetchAppData();
   }, [setArticleList, setCollectionList]);
+
   return (
     <>
       <SafeAreaView style={styles.headerContainer} />
@@ -116,6 +101,24 @@ export const Home = () => {
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>
+      <View style={styles.footerWrapper}>
+        <AddIcon />
+      </View>
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  headerContainer: {
+    flex: 0,
+    backgroundColor: colors.red,
+  },
+  footerContainer: {
+    flex: 1,
+  },
+  footerWrapper: {
+    position: 'absolute',
+    right: 27,
+    bottom: 26,
+  },
+});

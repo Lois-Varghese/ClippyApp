@@ -10,7 +10,6 @@ import Text from '../common/Text';
 import colors from '../config/colors';
 import {MainContext} from '../util/MainContext';
 import Separator from '../common/Separator';
-import AddIcon from './AddIcon';
 import {NoData} from '../common/NoData';
 import {openLink} from '../config/functions';
 
@@ -74,42 +73,37 @@ export const ArticleList = () => {
   };
 
   return (
-    <>
-      <View style={[styles.container, {backgroundColor: bgColors}]}>
-        <SectionList
-          sections={parsedData}
-          keyExtractor={(_item, index) => index}
-          renderSectionHeader={({section: {title}}) => (
-            <Text
-              style={[
-                styles.readText,
-                {
-                  display: showReadText(title),
-                  marginTop: paddingShowText(title),
-                },
-              ]}>
-              {title}
-            </Text>
-          )}
-          renderItem={({item}) => (
-            <>
-              <TouchableOpacity
-                style={styles.listWrapper}
-                onLongPress={() => handleOpenBottomSheet(item.url, item.id)}
-                onPress={() => handleOpenArticle(item.url, item.id)}>
-                <Image source={{uri: item.imageUrl}} style={styles.image} />
-                <Text style={styles.articleTitle}>{item.title}</Text>
-              </TouchableOpacity>
-              <Separator />
-            </>
-          )}
-          ListEmptyComponent={renderEmptyContainer}
-        />
-      </View>
-      <View style={styles.footerWrapper}>
-        <AddIcon />
-      </View>
-    </>
+    <View style={[styles.container, {backgroundColor: bgColors}]}>
+      <SectionList
+        sections={parsedData}
+        keyExtractor={(_item, index) => index}
+        renderSectionHeader={({section: {title}}) => (
+          <Text
+            style={[
+              styles.readText,
+              {
+                display: showReadText(title),
+                marginTop: paddingShowText(title),
+              },
+            ]}>
+            {title}
+          </Text>
+        )}
+        renderItem={({item}) => (
+          <>
+            <TouchableOpacity
+              style={styles.listWrapper}
+              onLongPress={() => handleOpenBottomSheet(item.url, item.id)}
+              onPress={() => handleOpenArticle(item.url, item.id)}>
+              <Image source={{uri: item.imageUrl}} style={styles.image} />
+              <Text style={styles.articleTitle}>{item.title}</Text>
+            </TouchableOpacity>
+            <Separator />
+          </>
+        )}
+        ListEmptyComponent={renderEmptyContainer}
+      />
+    </View>
   );
 };
 
@@ -135,11 +129,6 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     marginBottom: 14,
     fontSize: 16,
-  },
-  footerWrapper: {
-    position: 'absolute',
-    right: 27,
-    bottom: 0,
   },
   image: {
     width: 24,

@@ -4,35 +4,7 @@ import Text from '../common/Text';
 import colors from '../config/colors';
 import {MainContext} from '../util/MainContext';
 import Separator from '../common/Separator';
-import AddIcon from './AddIcon';
 import {NoData} from '../common/NoData';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  collectionTitle: {
-    color: colors.black,
-    fontSize: 16,
-    fontWeight: '400',
-  },
-  articleTitle: {
-    color: colors.textGrey,
-    fontSize: 12,
-    marginTop: 10,
-    fontWeight: '400',
-  },
-  listWrapper: {
-    paddingTop: 16,
-    paddingLeft: 20,
-    paddingRight: 20,
-  },
-  footerWrapper: {
-    position: 'absolute',
-    right: 27,
-    bottom: 0,
-  },
-});
 
 export const CollectionList = ({navigation}) => {
   const {
@@ -55,7 +27,11 @@ export const CollectionList = ({navigation}) => {
   const renderEmptyContainer = () => {
     return (
       openModal === false && (
-        <NoData textValue={dataText} navigation={navigation} />
+        <NoData
+          textValue={dataText}
+          showBottomSheet={showBottomSheet}
+          openModal={openModal}
+        />
       )
     );
   };
@@ -91,18 +67,35 @@ export const CollectionList = ({navigation}) => {
   };
 
   return (
-    <>
-      <View style={[styles.container, {backgroundColor: bgColors}]}>
-        <FlatList
-          data={collectionList}
-          renderItem={renderItem}
-          keyExtractor={(_item, index) => index}
-          ListEmptyComponent={renderEmptyContainer()}
-        />
-      </View>
-      <View style={styles.footerWrapper}>
-        <AddIcon />
-      </View>
-    </>
+    <View style={[styles.container, {backgroundColor: bgColors}]}>
+      <FlatList
+        data={collectionList}
+        renderItem={renderItem}
+        keyExtractor={(_item, index) => index}
+        ListEmptyComponent={renderEmptyContainer()}
+      />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  collectionTitle: {
+    color: colors.black,
+    fontSize: 16,
+    fontWeight: '400',
+  },
+  articleTitle: {
+    color: colors.textGrey,
+    fontSize: 12,
+    marginTop: 10,
+    fontWeight: '400',
+  },
+  listWrapper: {
+    paddingTop: 16,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+});

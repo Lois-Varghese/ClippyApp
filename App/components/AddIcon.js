@@ -3,9 +3,9 @@ import {TouchableOpacity, StyleSheet, View} from 'react-native';
 import colors from '../config/colors';
 import {MainContext} from '../util/MainContext';
 import Icon from 'react-native-remix-icon';
-
 import AppModal from '../common/Modal';
 import BottomSheet from '../common/BottomSheet';
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.yellow,
@@ -37,6 +37,7 @@ export default function AddIcon() {
       setModalType('collection');
     }
   };
+
   return (
     <View>
       {openModal === true && <AppModal />}

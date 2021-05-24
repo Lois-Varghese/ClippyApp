@@ -5,9 +5,8 @@ import colors from '../config/colors';
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: '100%',
-    marginTop: '50%',
+    flex: 1,
+    marginTop: '80%',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -16,6 +15,7 @@ const styles = StyleSheet.create({
 export const NoData = ({textValue, showBottomSheet, openModal}) => {
   const bgColor =
     showBottomSheet === true || openModal === true ? colors.grey : colors.white;
+
   return (
     <>
       <View style={[styles.container, {backgroundColor: bgColor}]}>

@@ -1,4 +1,3 @@
-import React from 'react';
 import {Linking, Alert} from 'react-native';
 import Toast from 'react-native-root-toast';
 import colors from '../config/colors';

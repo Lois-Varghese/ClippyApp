@@ -184,7 +184,7 @@ export const MainContextProvider = ({children}) => {
       const urlData = await getLinkPreview(articlesFormData.url);
       return urlData;
     } catch (err) {
-      Alert.alert('Could not get the article data', 'Please try again later.');
+      Alert.alert('Invalid URL', 'Please enter a valid URL.');
     }
   };
 
@@ -218,7 +218,6 @@ export const MainContextProvider = ({children}) => {
       let data = [];
 
       const readItems = articleList.filter(item => item.isRead === true);
-
       const unReadItems = articleList.filter(item => item.isRead === false);
 
       convertedData.push({
@@ -232,7 +231,6 @@ export const MainContextProvider = ({children}) => {
       });
 
       const modifiedList = [...convertedData.concat(data)];
-
       return modifiedList;
     }
   };

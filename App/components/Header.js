@@ -5,26 +5,6 @@ import colors from '../config/colors';
 import {MainContext} from '../util/MainContext';
 import Icon from 'react-native-remix-icon';
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: colors.red,
-    alignItems: 'center',
-    height: 50,
-    paddingLeft: 18,
-    paddingRight: 17,
-    flexDirection: 'row',
-  },
-  headerText: {
-    fontSize: 20,
-    color: colors.white,
-    fontWeight: '700',
-    marginRight: 74,
-  },
-  edit: {
-    marginRight: 18,
-  },
-});
-
 export default function Header({navigation}) {
   const {
     showHeaderButtons,
@@ -35,6 +15,7 @@ export default function Header({navigation}) {
     setEditData,
     deleteCollection,
   } = useContext(MainContext);
+
   const leftMargin = showHeaderButtons ? 127 : 146;
 
   const handleDelete = () => {
@@ -88,3 +69,23 @@ export default function Header({navigation}) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: colors.red,
+    alignItems: 'center',
+    height: 50,
+    paddingLeft: 18,
+    paddingRight: 17,
+    flexDirection: 'row',
+  },
+  headerText: {
+    fontSize: 20,
+    color: colors.white,
+    marginRight: 74,
+    fontFamily: 'IBMPlexSerif-BoldItalic',
+  },
+  edit: {
+    marginRight: 18,
+  },
+});

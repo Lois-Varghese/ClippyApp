@@ -6,22 +6,6 @@ import {MainContext} from '../util/MainContext';
 import Text from '../common/Text';
 import {openLink} from '../config/functions';
 
-const styles = StyleSheet.create({
-  modal: {
-    backgroundColor: colors.white,
-    width: '100%',
-    bottom: 0,
-    marginLeft: 0,
-    position: 'absolute',
-  },
-  buttonStyle: {
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 61,
-  },
-});
-
 export default function BottomSheet() {
   const {
     showBottomSheet,
@@ -72,11 +56,12 @@ export default function BottomSheet() {
   };
 
   const height = bottomSheetType === 'collection' ? 140 : 258;
+  const marginTop = bottomSheetType === 'collection' ? '78%' : '64%';
 
   return (
     <Modal
       animationType={'slide'}
-      style={[styles.modal, {height: height}]}
+      style={[styles.modal, {height: height, top: marginTop}]}
       transparent={true}
       visible={showBottomSheet}
       backdropOpacity={0.5}
@@ -121,3 +106,18 @@ export default function BottomSheet() {
     </Modal>
   );
 }
+
+const styles = StyleSheet.create({
+  modal: {
+    backgroundColor: colors.white,
+    width: '100%',
+    marginLeft: 0,
+    position: 'absolute',
+  },
+  buttonStyle: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 61,
+  },
+});

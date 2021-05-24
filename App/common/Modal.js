@@ -6,6 +6,35 @@ import Text from '../common/Text';
 import CreateCollection from '../components/CreateCollection';
 import CreateClip from '../components/CreateClip';
 
+export default function AppModal() {
+  const {openModal, modalType, isEditArticle, isEditCollection} =
+    useContext(MainContext);
+
+  const height = modalType === 'collection' ? 148 : 240;
+
+  const modalHeaderTitle =
+    modalType === 'collection'
+      ? isEditCollection === false
+        ? 'Create a collection'
+        : 'Edit the collection'
+      : isEditArticle === false
+      ? 'Create a clip'
+      : 'Edit the clip';
+
+  return (
+    <Modal animationType={'slide'} transparent={true} visible={openModal}>
+      <View style={styles.modal}>
+        <View style={styles.modalHeader}>
+          <Text style={styles.text}>{modalHeaderTitle}</Text>
+        </View>
+        <View style={{height: height}}>
+          {modalType === 'collection' ? <CreateCollection /> : <CreateClip />}
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
 const styles = StyleSheet.create({
   modal: {
     backgroundColor: colors.white,
@@ -22,34 +51,8 @@ const styles = StyleSheet.create({
   },
   text: {
     color: colors.white,
-    fontWeight: '700',
+    fontFamily: 'IBMPlexSerif-MediumItalic',
     textAlign: 'center',
     fontSize: 18,
   },
 });
-
-export default function AppModal() {
-  const {openModal, modalType, isEditArticle, isEditCollection} =
-    useContext(MainContext);
-  const height = modalType === 'collection' ? 148 : 240;
-  const modalHeaderTitle =
-    modalType === 'collection'
-      ? isEditCollection === false
-        ? 'Create a collection'
-        : 'Edit the collection'
-      : isEditArticle === false
-      ? 'Create a clip'
-      : 'Edit the clip';
-  return (
-    <Modal animationType={'slide'} transparent={true} visible={openModal}>
-      <View style={styles.modal}>
-        <View style={styles.modalHeader}>
-          <Text style={styles.text}>{modalHeaderTitle}</Text>
-        </View>
-        <View style={{height: height}}>
-          {modalType === 'collection' ? <CreateCollection /> : <CreateClip />}
-        </View>
-      </View>
-    </Modal>
-  );
-}
