@@ -55,7 +55,7 @@ export default function BottomSheet() {
     setShowBottomSheet(false);
   };
 
-  const height = bottomSheetType === 'collection' ? 140 : 258;
+  const height = bottomSheetType === 'collection' ? 165 : 284;
   const marginTop = bottomSheetType === 'collection' ? '78%' : '64%';
 
   return (
@@ -67,37 +67,37 @@ export default function BottomSheet() {
       backdropOpacity={0.5}
       onBackdropPress={() => setShowBottomSheet(false)}>
       {bottomSheetType === 'collection' ? (
-        <>
+        <View style={styles.buttonWrapper}>
           <TouchableOpacity
-            style={styles.buttonStyle}
+            style={[styles.buttonStyle, styles.collectionButton]}
             onPress={() => handleCreateClip()}>
             <Text>Create a clip</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.buttonStyle}
+            style={[styles.buttonStyle, styles.collectionButton]}
             onPress={() => handleCreateCollection()}>
             <Text>Create a collection</Text>
           </TouchableOpacity>
-        </>
+        </View>
       ) : (
-        <View style={styles.wrapper}>
+        <View style={styles.buttonWrapper}>
           <TouchableOpacity
-            style={styles.buttonStyle}
+            style={[styles.buttonStyle, styles.articleButtons]}
             onPress={() => handleOpenBrowser()}>
             <Text>Open in browser</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.buttonStyle}
+            style={[styles.buttonStyle, styles.articleButtons]}
             onPress={() => handleMarkAsRead()}>
             <Text>Mark as read</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.buttonStyle}
+            style={[styles.buttonStyle, styles.articleButtons]}
             onPress={() => handleEdit()}>
             <Text>Edit</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.buttonStyle}
+            style={[styles.buttonStyle, styles.articleButtons]}
             onPress={() => handleDelete()}>
             <Text>Delete</Text>
           </TouchableOpacity>
@@ -115,9 +115,21 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   buttonStyle: {
-    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 61,
+  },
+  collectionButton: {
+    height: 82,
+    bottom: 12,
+  },
+  articleButtons: {
+    height: 62,
+    bottom: 16,
+  },
+  buttonWrapper: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

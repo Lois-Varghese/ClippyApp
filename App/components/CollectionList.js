@@ -14,11 +14,16 @@ export const CollectionList = ({navigation}) => {
     collectionList,
     setCollectionId,
     articlesList,
+    showHeaderButtons,
   } = useContext(MainContext);
 
-  const bgColors =
-    showBottomSheet === true || openModal === true
-      ? colors.lightBlack
+  const bgColor =
+    collectionList.length > 0 &&
+    showHeaderButtons === true &&
+    openModal === true
+      ? colors.lightGrey
+      : openModal === true || showBottomSheet === true
+      ? colors.footerBlack
       : colors.white;
 
   const dataText =
@@ -67,7 +72,7 @@ export const CollectionList = ({navigation}) => {
   };
 
   return (
-    <View style={[styles.container, {backgroundColor: bgColors}]}>
+    <View style={[styles.container, {backgroundColor: bgColor}]}>
       <FlatList
         data={collectionList}
         renderItem={renderItem}
@@ -82,9 +87,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  // container: {
-  //   flex: 1,
-  // },
   collectionTitle: {
     color: colors.black,
     fontSize: 16,
