@@ -33,15 +33,13 @@ export const ArticleList = () => {
   }, [articlesList, convertToSectionDataFormat]);
 
   const bgColors =
-    showBottomSheet === true || openModal === true
-      ? colors.lightBlack
-      : colors.white;
+    showBottomSheet || openModal ? colors.lightBlack : colors.white;
 
   const articleList = articlesList.filter(
     article => article.collectionListId === collectionId,
   );
 
-  const readItems = articleList.filter(item => item.isRead === true);
+  const readItems = articleList.filter(item => item.isRead);
 
   const showReadText = title =>
     title !== 'Read' ? 'none' : readItems.length > 0 ? 'flex' : 'none';
@@ -52,11 +50,13 @@ export const ArticleList = () => {
 
   const renderEmptyContainer = () => {
     return (
-      <NoData
-        textValue={dataText}
-        showBottomSheet={showBottomSheet}
-        openModal={openModal}
-      />
+      !openModal && (
+        <NoData
+          textValue={dataText}
+          showBottomSheet={showBottomSheet}
+          openModal={openModal}
+        />
+      )
     );
   };
 

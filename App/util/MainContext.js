@@ -73,12 +73,15 @@ export const MainContextProvider = ({children}) => {
       const label = collectionFormData.label;
 
       let editedArray = collectionList;
+      const id = collectionList.filter(
+        collection => collection.id === collectionId,
+      )[0].id;
 
       const indexOfRecordToEdit = collectionList.findIndex(
         collection => collection.id === collectionId,
       );
       editedArray[indexOfRecordToEdit] = {
-        collectionId,
+        id,
         label,
       };
 
@@ -217,8 +220,8 @@ export const MainContextProvider = ({children}) => {
       let convertedData = [];
       let data = [];
 
-      const readItems = articleList.filter(item => item.isRead === true);
-      const unReadItems = articleList.filter(item => item.isRead === false);
+      const readItems = articleList.filter(item => item.isRead);
+      const unReadItems = articleList.filter(item => !item.isRead);
 
       convertedData.push({
         title: 'Unread',

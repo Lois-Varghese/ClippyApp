@@ -35,12 +35,12 @@ export default function CreateClip() {
         articlesFormData.url,
       );
 
-    if (articlesFormData.url === '' || validatedRegEx === false) {
+    if (articlesFormData.url === '' || !validatedRegEx) {
       Alert.alert('Invalid URL.', 'Please enter a valid URL.');
       return false;
     }
 
-    if (isEditArticle === true) {
+    if (isEditArticle) {
       editArticle();
     } else {
       addArticles();
@@ -56,7 +56,7 @@ export default function CreateClip() {
     });
   };
 
-  const buttonText = isEditArticle === true ? 'Save' : 'Create';
+  const buttonText = isEditArticle ? 'Save' : 'Create';
 
   return (
     <>
@@ -65,7 +65,7 @@ export default function CreateClip() {
         <Dropdown />
 
         <Text style={[styles.textStyle, styles.urlText]}>URL</Text>
-        {dropdownOpen === false && (
+        {!dropdownOpen && (
           <Input
             value={articlesFormData.url}
             autoCapitalize={'none'}
@@ -74,7 +74,7 @@ export default function CreateClip() {
           />
         )}
       </View>
-      {dropdownOpen === false && (
+      {!dropdownOpen && (
         <View style={styles.buttonWrapper}>
           <TouchableOpacity
             style={styles.buttonCancel}

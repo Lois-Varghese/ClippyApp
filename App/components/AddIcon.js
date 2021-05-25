@@ -40,8 +40,8 @@ export default function AddIcon() {
 
   return (
     <View>
-      {openModal === true && <AppModal />}
-      {showBottomSheet === true && <BottomSheet />}
+      {openModal && <AppModal />}
+      {showBottomSheet && <BottomSheet />}
       <TouchableOpacity
         style={styles.container}
         onPress={() => onAddButtonClick()}>

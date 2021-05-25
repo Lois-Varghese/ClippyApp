@@ -14,12 +14,12 @@ export default function AppModal() {
 
   const modalHeaderTitle =
     modalType === 'collection'
-      ? isEditCollection === false
-        ? 'Create a collection'
-        : 'Edit the collection'
-      : isEditArticle === false
-      ? 'Create a clip'
-      : 'Edit the clip';
+      ? isEditCollection
+        ? 'Edit the collection'
+        : 'Create a collection'
+      : isEditArticle
+      ? 'Edit the clip'
+      : 'Create a clip';
 
   return (
     <Modal animationType={'slide'} transparent={true} visible={openModal}>

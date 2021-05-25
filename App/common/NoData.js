@@ -13,8 +13,7 @@ const styles = StyleSheet.create({
 });
 
 export const NoData = ({textValue, showBottomSheet, openModal}) => {
-  const bgColor =
-    showBottomSheet === true || openModal === true ? colors.grey : colors.white;
+  const bgColor = showBottomSheet || openModal ? colors.grey : colors.white;
 
   return (
     <>

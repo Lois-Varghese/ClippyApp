@@ -17,7 +17,7 @@ export default function CreateCollection() {
   } = useContext(MainContext);
 
   const handleCreate = () => {
-    if (isEditCollection === true) {
+    if (isEditCollection) {
       editCollection();
     } else {
       addCollection();
@@ -31,7 +31,7 @@ export default function CreateCollection() {
     setCollectionFormData({label: ''});
   };
 
-  const buttonText = isEditCollection === true ? 'Save' : 'Create';
+  const buttonText = isEditCollection ? 'Save' : 'Create';
 
   return (
     <>

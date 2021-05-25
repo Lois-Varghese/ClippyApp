@@ -34,7 +34,7 @@ export default function Header({navigation}) {
 
   return (
     <View style={styles.container}>
-      {showHeaderButtons === true && (
+      {showHeaderButtons && (
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('CollectionList');
@@ -45,7 +45,7 @@ export default function Header({navigation}) {
       )}
 
       <Text style={[styles.headerText, {marginLeft: leftMargin}]}>Clippy</Text>
-      {showHeaderButtons === true && (
+      {showHeaderButtons && (
         <TouchableOpacity
           onPress={() => {
             setEditData();
@@ -61,7 +61,7 @@ export default function Header({navigation}) {
           />
         </TouchableOpacity>
       )}
-      {showHeaderButtons === true && (
+      {showHeaderButtons && (
         <TouchableOpacity onPress={() => handleDelete()}>
           <Icon name="ri-delete-bin-4-line" size="24" color={colors.white} />
         </TouchableOpacity>

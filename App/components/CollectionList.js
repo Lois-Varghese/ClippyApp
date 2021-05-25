@@ -18,11 +18,9 @@ export const CollectionList = ({navigation}) => {
   } = useContext(MainContext);
 
   const bgColor =
-    collectionList.length > 0 &&
-    showHeaderButtons === true &&
-    openModal === true
+    collectionList.length > 0 && showHeaderButtons && openModal
       ? colors.lightGrey
-      : openModal === true || showBottomSheet === true
+      : openModal || showBottomSheet
       ? colors.footerBlack
       : colors.white;
 
@@ -31,7 +29,7 @@ export const CollectionList = ({navigation}) => {
 
   const renderEmptyContainer = () => {
     return (
-      openModal === false && (
+      !openModal && (
         <NoData
           textValue={dataText}
           showBottomSheet={showBottomSheet}
