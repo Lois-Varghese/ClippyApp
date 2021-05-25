@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import Text from './Text';
+import Text from '../common/Text';
 import colors from '../config/colors';
 
 const styles = StyleSheet.create({
