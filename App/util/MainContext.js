@@ -214,7 +214,7 @@ export const MainContextProvider = ({children}) => {
     const articleList = articlesList.filter(
       article => article.collectionListId === collectionId,
     );
-    if (articleList.length === 0) {
+    if (!articleList.length) {
       return [];
     } else {
       let convertedData = [];
