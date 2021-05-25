@@ -29,7 +29,7 @@ export default function AddIcon() {
   } = useContext(MainContext);
 
   const onAddButtonClick = () => {
-    if (collectionList.length > 0) {
+    if (collectionList.length) {
       setShowBottomSheet(true);
       setBottomSheetType('collection');
     } else {

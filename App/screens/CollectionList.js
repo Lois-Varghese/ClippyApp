@@ -18,7 +18,7 @@ export const CollectionList = ({navigation}) => {
   } = useContext(MainContext);
 
   const bgColor =
-    collectionList.length > 0 && showHeaderButtons && openModal
+    collectionList.length && showHeaderButtons && openModal
       ? colors.lightGrey
       : openModal || showBottomSheet
       ? colors.footerBlack
@@ -44,7 +44,7 @@ export const CollectionList = ({navigation}) => {
       article => article.collectionListId === item.id,
     );
     const titles = articles.length > 3 ? articles.slice(0, 3) : articles;
-    const noArticles = articles.length === 0 ? true : false;
+    const noArticles = !articles.length ? true : false;
 
     return (
       <>

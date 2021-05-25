@@ -42,7 +42,7 @@ export const ArticleList = () => {
   const readItems = articleList.filter(item => item.isRead);
 
   const showReadText = title =>
-    title !== 'Read' ? 'none' : readItems.length > 0 ? 'flex' : 'none';
+    title !== 'Read' ? 'none' : readItems.length ? 'flex' : 'none';
 
   const paddingShowText = title => (title === 'Read' ? 28 : 0);
 

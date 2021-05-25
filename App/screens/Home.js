@@ -35,7 +35,7 @@ export const Home = () => {
   } = useContext(MainContext);
 
   const bgColor =
-    collectionList.length > 0 && showHeaderButtons && openModal
+    collectionList.length && showHeaderButtons && openModal
       ? colors.lightGrey
       : openModal || showBottomSheet
       ? colors.footerBlack
