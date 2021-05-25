@@ -10,7 +10,7 @@ import Text from '../common/Text';
 import colors from '../config/colors';
 import {MainContext} from '../util/MainContext';
 import Separator from '../common/Separator';
-import {NoData} from '../common/NoData';
+import {NoData} from './NoData';
 import {openLink} from '../config/functions';
 
 export const ArticleList = () => {

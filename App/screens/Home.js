@@ -6,10 +6,10 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {MainContext} from '../util/MainContext';
 import Header from '../components/Header';
 import colors from '../config/colors';
-import {CollectionList} from '../components/CollectionList';
-import {ArticleList} from '../components/ArticleList';
+import {CollectionList} from './CollectionList';
+import {ArticleList} from './ArticleList';
 import AddIcon from '../components/AddIcon';
-import {NoData} from '../common/NoData';
+import {NoData} from './NoData';
 import AppModal from '../common/Modal';
 import BottomSheet from '../common/BottomSheet';
 
